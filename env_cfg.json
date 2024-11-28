@@ -1,0 +1,7 @@
+{
+  "dec_model": "E:\\python\\BuLuoChongTu\\mymodels\\yolo11COC1600m300ep.pt",
+  "cls_model": "E:\\python\\BuLuoChongTu\\mymodels\\yolo11cls640m.pt",
+  "seg_model": "E:\\python\\BuLuoChongTu\\mymodels\\yolo11seg640m.pt",
+  "users": {},
+  "conditions": {}
+}
