@@ -602,19 +602,23 @@ class Env:
         self.update_cur_page()
         if self.cur_page != "home_zsj":
             self.goto_zsj()
-        self.update_objs()
         n=0
         while True:
             n+=1
+            self.update_objs()
             objs = self.objs
             if self.click_obj("进攻_胜利之星", objs): break
             if self.click_obj("进攻", objs): break
-            if "需要部队" in self.objs.keys(): return -1
-            self.update_stats()
-            if self.stats["需要部队"] > -1: return -1
             time.sleep(1.5)
             if n > 10: break
+
         if not self.click_obj("立即寻找"): self.click_txt("搜索")
+        self.update_objs()
+        if "需要部队" in self.objs.keys(): return -1
+        self.update_stats()
+        if self.stats["需要部队"] > -1: return -1
+        time.sleep(1.5)
+
         tri_n = 0
         m = condition
         while True:
@@ -718,10 +722,6 @@ class Env:
         self.random_wait(1)
         r=self.click_obj("切换")
         self.random_wait(1)
-        # self.click_pic("E:/python/BuLuoChongTu/sources/setting.png", MIN_NUM_GOOD_MATCHES=3)
-        # time.sleep(1)
-        # r = self.click_pic("E:/python/BuLuoChongTu/sources/switch_button.png", MIN_NUM_GOOD_MATCHES=3)
-        # time.sleep(1)
         if r is None:
             return True
 
@@ -792,7 +792,7 @@ class Env:
     def auto_train_zsj(self):
         tries=0
         while self.findTxt("军队") is None:
-            self.click_pic("E:/python/BuLuoChongTu/sources/lianbing.png")
+            self.click_obj("训练")
             self.random_wait(1)
             tries+=1
             if tries >=10:
@@ -941,13 +941,13 @@ class Env:
                 #
                 if condition is None or condition is True:
                     condition = 'True'
-                self.fight_yolo(condition=condition)
+                r = self.fight_yolo(condition=condition)
                 self.random_wait(3)
-                self.update_stats()
-                if self.stats['需要部队'] > -1:
-                    if not self.quite:
-                        print('需要部队')
-                    break
+                print(r)
+                if r == -1 or "需要部队" in self.objs.keys():
+                    print("train_z", end="    ")
+                    self.auto_train_zsj()
+                    return False
                 self.update_cur_page()
                 if self.cur_page == "star_reward": self.click_obj("确定")
             print("train_z", end="    ")
