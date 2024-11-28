@@ -218,13 +218,15 @@ class Env:
             winsound.Beep(1000, 200)
             if self.cur_page in ["home_zsj", "home_ysj"]:
                 return True
+            elif self.cur_page == "wait":
+                pass
             elif self.cur_page.startswith("war") or self.cur_page == "counting":
                 self.d.keyevent('back')
                 self.random_wait(1)
                 self.click_obj("确定")
                 self.random_wait(1)
-                self.click_obj("回营")
-                self.random_wait(1)
+                # self.click_obj("回营")
+                # self.random_wait(1)
             elif self.cur_page == "star_reward":
                 self.d.keyevent('back')
             elif not self.cur_page in ["home_zsj", "home_ysj"]:
@@ -817,7 +819,7 @@ class Env:
                     self.click_txt("确定")
                 time.sleep(0.5)
         except Exception as e:
-            print("Wrong")
+            print("Wrong", end="")
             def train():
                 while True:
                     if random.random() < 0.5: self.d.swipe(0.6, 0.6, 0.4, 0.3, steps=30)
@@ -943,7 +945,6 @@ class Env:
                     condition = 'True'
                 r = self.fight_yolo(condition=condition)
                 self.random_wait(3)
-                print(r)
                 if r == -1 or "需要部队" in self.objs.keys():
                     print("train_z", end="    ")
                     self.auto_train_zsj()
